@@ -51,7 +51,7 @@ import axios from 'axios'
     user, and adding that card to the DOM.
 */
 
-// const followersArray = [];
+const followersArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 
 
@@ -82,7 +82,6 @@ const followerscount = document.createElement('p')
 const followingcount = document.createElement('p')
 const user_bio = document.createElement('p')
 
-
 card.appendChild(myimg)
 card.appendChild(card_info)
 card_info.appendChild(real_name)
@@ -100,16 +99,28 @@ profile.textContent = `Profile: `
 github_url.href = html_url
 github_url.textContent = html_url
 followerscount.textContent = `Followers: ${followers}`
-followingcount.textContent = `Followers: ${following}`
+followingcount.textContent = `Following: ${following}`
 user_bio.textContent = `Bio: ${bio}`
 
+return card
 }
 
+const cards = document.querySelector('.cards')
+
 axios.get('https://api.github.com/users/muhannadbm').then(res => {
-  console.log(res.data.id)
-  res.ava
+  const myprofile = Createuser(res.data)
+  cards.appendChild(myprofile)
 }).catch(err => {
   console.log(err)
 }).finally(() => console.log('finally reached'))
 
 
+followersArray.forEach(element => { 
+  axios.get(`https://api.github.com/users/${element}`).then(res => { 
+    const myprofile = Createuser(res.data)
+    cards.appendChild(myprofile)
+  }).catch(err => { 
+    console.log(err)
+  })
+
+})
